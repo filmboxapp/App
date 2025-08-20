@@ -63,7 +63,6 @@
     box-shadow: 0 0 15px rgba(0,255,0,0.7);
   }
 
-  /* Etiqueta de calidad en la esquina de cada póster */
   .movie-card .quality-tag {
     position: absolute;
     top: 8px;
@@ -86,47 +85,39 @@
 </header>
 
 <section class="movies" id="movieList">
-  <!-- Las películas se cargarán automáticamente desde el JSON -->
+  <!-- Las películas se cargarán aquí automáticamente desde peliculas.json -->
 </section>
 
 <script>
 const movieList = document.getElementById('movieList');
 const searchInput = document.getElementById('search');
-let moviesData = [];
 
-// Cargar JSON
+// Cargar películas desde JSON
 fetch('peliculas.json')
   .then(response => response.json())
   .then(data => {
-    moviesData = data;
-    renderMovies(moviesData);
-  })
-  .catch(error => console.error('Error al cargar JSON:', error));
+    data.forEach(movie => {
+      const card = document.createElement('a');
+      card.className = 'movie-card';
+      card.href = movie.link;
+      card.style.backgroundImage = `url('${movie.poster}')`;
+      card.dataset.title = movie.title.toLowerCase();
 
-// Función para renderizar películas
-function renderMovies(movies) {
-  movieList.innerHTML = '';
-  movies.forEach(movie => {
-    const card = document.createElement('a');
-    card.className = 'movie-card';
-    card.href = movie.href;
-    card.dataset.title = movie.title;
-    card.style.backgroundImage = `url('${movie.poster}')`;
-    
-    const qualityTag = document.createElement('span');
-    qualityTag.className = 'quality-tag';
-    qualityTag.textContent = movie.quality || 'HD';
-    
-    card.appendChild(qualityTag);
-    movieList.appendChild(card);
+      const quality = document.createElement('span');
+      quality.className = 'quality-tag';
+      quality.textContent = movie.quality || '';
+      card.appendChild(quality);
+
+      movieList.appendChild(card);
+    });
   });
-}
 
 // Buscador
 searchInput.addEventListener('input', () => {
-  const query = searchInput.value.toLowerCase();
-  const filtered = moviesData.filter(movie => movie.title.toLowerCase().includes(query));
-  renderMovies(filtered);
+  const q = searchInput.value.toLowerCase();
+  document.querySelectorAll('.movie-card').forEach(card => {
+    card.style.display = card.dataset.title.includes(q) ? '' : 'none';
+  });
 });
 </script>
 
