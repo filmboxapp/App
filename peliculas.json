@@ -24,6 +24,12 @@
     "quality": "HD"
   },
   {
+  "title": "five Nights at Freddys",
+  "poster": "https://image.tmdb.org/t/p/original/t6RSJ1z8bDEYpk4fLwxfkXciUak.jpg",
+  "link": "https://filmboxapp.github.io/Five-Nights-at-Freddys-/",
+  "quality": "CAM"
+  },
+  {
     "title": "pitufos",
     "poster": "https://image.tmdb.org/t/p/w300//zBdQclxQnEDOhDOjkKgKPW6jEHh.jpg",
     "link": "https://filmboxapp.github.io/index.html/",
