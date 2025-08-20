@@ -162,7 +162,7 @@
     "quality": "HD"
   },
   {
-  "title": "tunderbolts",
+  "title": "thunderbolts",
   "poster": "https://image.tmdb.org/t/p/original/zLbhKNJGDSfBCXFNtypM7ZuPTaW.jpg",
   "link": "https://filmboxapp.github.io/tunderbolts/",
   "quality": "HD"
@@ -198,9 +198,9 @@
   "quality": "CAM"
   },
   {
-    "title": "la hora de la desaparición",
-    "poster": "https://image.tmdb.org/t/p/original/cwjNSLj5FCkwFsTx7g57ybWQDcp.jpg",
-    "link": "https://filmboxapp.github.io/la-hora-de-la-desaparicion/",
+    "title": "nadie 2",
+    "poster": "https://image.tmdb.org/t/p/original/cvtnWucN08TudAv7vDNGTcJyTRg.jpg",
+    "link": "https://filmboxapp.github.io/nadie-2/",
     "quality": "CAM"
   }
 ]
