@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlixStream App</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #fff;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    background-color: rgba(17,17,17,0.9);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+  }
+
+  header .logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e81c1c;
+    margin-right: 15px;
+  }
+
+  header input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: #222;
+    color: #ffffff;
+  }
+
+  .movies {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .movie-card {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    aspect-ratio: 2/3;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+
+  .movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0,255,0,0.7);
+  }
+
+  /* Etiqueta de calidad en la esquina de cada póster */
+  .movie-card .quality-tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #e81c1c;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 4px;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">FILMBOX</div>
+  <input type="text" id="search" placeholder="Buscar...">
+</header>
+
+<section class="movies" id="movieList">
+  <!-- Aquí se cargarán las películas desde movies.json -->
+</section>
+
+<script>
+const searchInput = document.getElementById('search');
+const movieList = document.getElementById('movieList');
+
+// Función para cargar películas desde JSON
+fetch('movies.json')
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(movie => {
+      const a = document.createElement('a');
+      a.className = 'movie-card';
+      a.href = movie.href;
+      a.dataset.title = movie.title;
+      a.dataset.poster = movie.poster;
+      a.dataset.background = movie.background;
+      a.dataset.year = movie.year;
+      a.dataset.duration = movie.duration;
+      a.dataset.rating = movie.rating;
+      a.dataset.synopsis = movie.synopsis;
+      a.dataset.video = movie.video;
+      a.style.backgroundImage = `url('${movie.poster}')`;
+
+      const span = document.createElement('span');
+      span.className = 'quality-tag';
+      span.textContent = movie.quality;
+
+      a.appendChild(span);
+      movieList.appendChild(a);
+    });
+
+    // Buscador
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase();
+      document.querySelectorAll('.movie-card').forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        card.style.display = title.includes(q) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
