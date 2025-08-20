@@ -85,39 +85,46 @@
 </header>
 
 <section class="movies" id="movieList">
-  <!-- Las películas se cargarán aquí automáticamente desde peliculas.json -->
+  <!-- Las películas se cargarán aquí desde el JSON -->
 </section>
 
 <script>
 const movieList = document.getElementById('movieList');
 const searchInput = document.getElementById('search');
+let moviesData = [];
 
-// Cargar películas desde JSON
+// Cargar JSON
 fetch('peliculas.json')
   .then(response => response.json())
   .then(data => {
-    data.forEach(movie => {
-      const card = document.createElement('a');
-      card.className = 'movie-card';
-      card.href = movie.link;
-      card.style.backgroundImage = `url('${movie.poster}')`;
-      card.dataset.title = movie.title.toLowerCase();
-
-      const quality = document.createElement('span');
-      quality.className = 'quality-tag';
-      quality.textContent = movie.quality || '';
-      card.appendChild(quality);
-
-      movieList.appendChild(card);
-    });
+    moviesData = data;
+    renderMovies(moviesData);
   });
+
+// Función para mostrar películas
+function renderMovies(movies) {
+  movieList.innerHTML = '';
+  movies.forEach(movie => {
+    const a = document.createElement('a');
+    a.className = 'movie-card';
+    a.href = movie.link;
+    a.dataset.title = movie.title;
+    a.style.backgroundImage = `url('${movie.poster}')`;
+
+    const span = document.createElement('span');
+    span.className = 'quality-tag';
+    span.textContent = movie.quality || 'HD';
+
+    a.appendChild(span);
+    movieList.appendChild(a);
+  });
+}
 
 // Buscador
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.toLowerCase();
-  document.querySelectorAll('.movie-card').forEach(card => {
-    card.style.display = card.dataset.title.includes(q) ? '' : 'none';
-  });
+  const filtered = moviesData.filter(movie => movie.title.toLowerCase().includes(q));
+  renderMovies(filtered);
 });
 </script>
 
