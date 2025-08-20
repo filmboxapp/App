@@ -86,48 +86,48 @@
 </header>
 
 <section class="movies" id="movieList">
-  <!-- Aquí se cargarán las películas desde movies.json -->
+  <!-- Las películas se cargarán automáticamente desde el JSON -->
 </section>
 
 <script>
-const searchInput = document.getElementById('search');
 const movieList = document.getElementById('movieList');
+const searchInput = document.getElementById('search');
+let moviesData = [];
 
-// Función para cargar películas desde JSON
-fetch('movies.json')
-  .then(res => res.json())
+// Cargar JSON
+fetch('peliculas.json')
+  .then(response => response.json())
   .then(data => {
-    data.forEach(movie => {
-      const a = document.createElement('a');
-      a.className = 'movie-card';
-      a.href = movie.href;
-      a.dataset.title = movie.title;
-      a.dataset.poster = movie.poster;
-      a.dataset.background = movie.background;
-      a.dataset.year = movie.year;
-      a.dataset.duration = movie.duration;
-      a.dataset.rating = movie.rating;
-      a.dataset.synopsis = movie.synopsis;
-      a.dataset.video = movie.video;
-      a.style.backgroundImage = `url('${movie.poster}')`;
+    moviesData = data;
+    renderMovies(moviesData);
+  })
+  .catch(error => console.error('Error al cargar JSON:', error));
 
-      const span = document.createElement('span');
-      span.className = 'quality-tag';
-      span.textContent = movie.quality;
-
-      a.appendChild(span);
-      movieList.appendChild(a);
-    });
-
-    // Buscador
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.toLowerCase();
-      document.querySelectorAll('.movie-card').forEach(card => {
-        const title = card.dataset.title.toLowerCase();
-        card.style.display = title.includes(q) ? '' : 'none';
-      });
-    });
+// Función para renderizar películas
+function renderMovies(movies) {
+  movieList.innerHTML = '';
+  movies.forEach(movie => {
+    const card = document.createElement('a');
+    card.className = 'movie-card';
+    card.href = movie.href;
+    card.dataset.title = movie.title;
+    card.style.backgroundImage = `url('${movie.poster}')`;
+    
+    const qualityTag = document.createElement('span');
+    qualityTag.className = 'quality-tag';
+    qualityTag.textContent = movie.quality || 'HD';
+    
+    card.appendChild(qualityTag);
+    movieList.appendChild(card);
   });
+}
+
+// Buscador
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
+  const filtered = moviesData.filter(movie => movie.title.toLowerCase().includes(query));
+  renderMovies(filtered);
+});
 </script>
 
 </body>
